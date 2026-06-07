@@ -1,15 +1,13 @@
-int led1 = 2;
-int led2 = 4;
-
-bool state1 = false;
-bool state2 = false;
+int led = 2;
+bool ledState = false;
 
 void setup()
 {
-  pinMode(led1,OUTPUT);
-  pinMode(led2,OUTPUT);
+  pinMode(led, OUTPUT);
 
   Serial.begin(115200);
+
+  Serial.println("ESP32 Ready");
 }
 
 void loop()
@@ -17,27 +15,23 @@ void loop()
   if(Serial.available())
   {
     String cmd = Serial.readStringUntil('\n');
+
     cmd.trim();
 
-    if(cmd=="1")
+    if(cmd == "1")
     {
-      state1=!state1;
-      digitalWrite(led1,state1);
+      ledState = !ledState;
 
-      Serial.println("LED1切换");
-    }
+      digitalWrite(led, ledState);
 
-    else if(cmd=="2")
-    {
-      state2=!state2;
-      digitalWrite(led2,state2);
-
-      Serial.println("LED2切换");
-    }
-
-    else
-    {
-      Serial.println("无效指令");
+      if(ledState)
+      {
+        Serial.println("LED1亮");
+      }
+      else
+      {
+        Serial.println("LED1灭");
+      }
     }
   }
 }
